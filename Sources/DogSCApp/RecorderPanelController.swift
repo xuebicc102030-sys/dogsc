@@ -989,14 +989,9 @@ final class RecorderPanelController: NSObject, NSWindowDelegate {
             phase: currentPhase,
             selectionActive: selectionIsActive
         ))
-        // A recorder HUD must keep one stable overlay identity while moving
-        // between displays with separate Spaces. This mirrors the camera HUD:
-        // the behavior is fixed at construction and never toggled while held.
-        panel.collectionBehavior = [
-            .canJoinAllSpaces,
-            .fullScreenAuxiliary,
-            .ignoresCycle,
-        ]
+        // Start with the floating HUD's Space behavior. Notch docking adds its
+        // desktop/Mission Control policy before the panel is first presented.
+        panel.collectionBehavior = RecorderPanelSpacePolicy.collectionBehavior(isDocked: false)
         panel.contentMinSize = initialSize
         panel.contentMaxSize = initialSize
         panel.delegate = self
@@ -1017,6 +1012,10 @@ final class RecorderPanelController: NSObject, NSWindowDelegate {
     }
 
     private func updatePanelLevel() {
+        let behavior = RecorderPanelSpacePolicy.collectionBehavior(isDocked: notchState.isDocked)
+        if panel.collectionBehavior != behavior {
+            panel.collectionBehavior = behavior
+        }
         panel.level = notchState.isDocked
             ? NSWindow.Level(rawValue: NSWindow.Level.statusBar.rawValue + 1)
             : CaptureWindowLevelPolicy.level(for: .recorderPanel(

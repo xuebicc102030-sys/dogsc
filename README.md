@@ -76,7 +76,7 @@
 
 ## 刘海隐藏版本
 
-带刘海的 Mac 上，录制条默认收在屏幕顶部刘海下缘。鼠标移到刘海下缘时展开，移开后自动收起；录制中收起时保留红色状态点。配置弹窗和引导打开期间，面板会保持展开。
+带刘海的 Mac 上，录制条默认收在屏幕顶部刘海下缘。鼠标移到刘海下缘时展开，移开后自动收起；录制中收起时保留红色状态点。配置弹窗和引导打开期间，面板会保持展开。刘海面板使用固定桌面叠加层，避免在「显示桌面」时随普通窗口移动到 Dock 边缘。
 
 在录制条的「…」中关闭「刘海悬停展开」，即可使用自由浮窗。多屏连接时停靠系统检测到的第一个真实刘海屏；整机没有刘海屏时使用自由浮窗。
 
@@ -90,6 +90,8 @@
 mkdir -p .build/notch-geometry-tests
 swiftc Sources/DogSCApp/RecorderNotchGeometry.swift Tools/VerifyRecorderNotchGeometry.swift -o .build/notch-geometry-tests/verify
 .build/notch-geometry-tests/verify
+swiftc Sources/DogSCApp/RecorderPanelSpacePolicy.swift Tools/VerifyRecorderPanelSpacePolicy.swift -o .build/notch-geometry-tests/verify-space-policy
+.build/notch-geometry-tests/verify-space-policy
 ```
 
 ## 开始使用
